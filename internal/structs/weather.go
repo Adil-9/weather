@@ -2,7 +2,6 @@ package structs
 
 type WeatherData struct {
 	Coord      coordinates `json:"coord"`
-	Weather    weather     `json:"weather"`
 	Base       string      `json:"base"`
 	Main       main        `json:"main"`
 	Visibility int         `json:"visibility"`
@@ -19,13 +18,6 @@ type WeatherData struct {
 type coordinates struct {
 	Lon float64 `json:"lon"`
 	Lat float64 `json:"lat"`
-}
-
-type weather []struct {
-	ID          int    `json:"id"`
-	Main        string `json:"main"`
-	Description string `json:"description"`
-	Icon        string `json:"icon"`
 }
 
 type main struct {

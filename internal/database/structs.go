@@ -6,7 +6,7 @@ import (
 )
 
 type Manage interface {
-	GetWeather(city string)                               //return json smth
+	GetWeather(city string) (structs.WeatherData, error)                     //return json smth
 	PutWeather(cityWeatherData structs.WeatherData, city string) error //pass struct smth
 }
 

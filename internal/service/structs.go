@@ -2,6 +2,7 @@ package service
 
 import (
 	"weather/internal/database"
+	"weather/internal/structs"
 )
 
 type Service struct {
@@ -13,7 +14,7 @@ func NewService(repo *database.Repository) *Service {
 }
 
 type Requester interface {
-	RequestWeather()
+	RequestWeather(city string) (structs.WeatherData ,error)
 	PutWeatherInDatabase(city string) error
 }
 
