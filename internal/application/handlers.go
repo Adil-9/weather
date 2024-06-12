@@ -1,6 +1,7 @@
 package application
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,10 +25,13 @@ func (h *Handler) HandleGet(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
+	} else if city.Name == "" {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
 	}
 
 	weatherData, err := h.service.RequestWeather(city.Name)
-	if err != nil {
+	if err != nil && err != sql.ErrNoRows {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
@@ -36,7 +40,6 @@ func (h *Handler) HandleGet(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 	}
-
 	w.Write(marshalled)
 }
 
@@ -53,5 +56,4 @@ func (h *Handler) HandlePut(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-
 }

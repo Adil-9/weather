@@ -9,11 +9,11 @@ import (
 )
 
 const (
-	host     = "postgres"
-	port     = 5432
+	host     = "localhost"
+	port     = 3000
 	user     = "postgres"
 	password = "password"
-	dbname   = "postgres"
+	dbname   = "weather"
 )
 
 func ConnectPSQL() (*sql.DB, error) {
@@ -84,42 +84,41 @@ CREATE TABLE IF NOT EXISTS WeatherData (
 	return nil
 }
 
-func (m *Manager) GetWeather(city string) (structs.WeatherData, error) {
+func (m *Manager) GetWeather(city string) (structs.WeatherData, error) { //this is a mess
 	var ret structs.WeatherData
 	query := fmt.Sprintf(`
 	SELECT
-    wd.base,
-    wd.visibility,
-    wd.dt,
-    wd.timezone,
-    wd.name,
-    wd.cod,
-    c.lon,
-    c.lat,
-    m.temp,
-    m.feels_like,
-    m.temp_min,
-    m.temp_max,
-    m.pressure,
-    m.humidity,
-    m.sea_level,
-    m.grnd_level,
-    wn.speed,
-    wn.deg,
-    wn.gust,
-    cl.all,
-    s.type,
-    s.country,
-    s.sunrise,
-    s.sunset
-FROM WeatherData wd
-JOIN Coordinates c ON wd.coord_id = c.id
-JOIN Main m ON wd.main_id = m.id
-JOIN Wind wn ON wd.wind_id = wn.id
-JOIN Clouds cl ON wd.clouds_id = cl.id
-JOIN Sys s ON wd.sys_id = s.id
-WHERE wd.city = '%s'; -- assuming you are filtering by WeatherData ID
-`, city)
+	wd.base,
+	wd.visibility,
+	wd.dt,
+	wd.timezone,
+	wd.name,
+	wd.cod,
+	c.lon,
+	c.lat,
+	m.temp,
+	m.feels_like,
+	m.temp_min,
+	m.temp_max,
+	m.pressure,
+	m.humidity,
+	m.sea_level,
+	m.grnd_level,
+	wn.speed,
+	wn.deg,
+	wn.gust,
+	cl.all,
+	s.type,
+	s.country,
+	s.sunrise,
+	s.sunset
+		FROM WeatherData wd
+		JOIN Coordinates c ON wd.coord_id = c.id
+		JOIN Main m ON wd.main_id = m.id
+		JOIN Wind wn ON wd.wind_id = wn.id
+		JOIN Clouds cl ON wd.clouds_id = cl.id
+		JOIN Sys s ON wd.sys_id = s.id
+		WHERE wd.city = '%s'; -- assuming you are filtering by WeatherData ID`, city)
 	row := m.db.QueryRow(query)
 	err := row.Scan(&ret.Base, &ret.Visibility, &ret.Dt, &ret.Timezone, &ret.Name, &ret.Cod,
 		&ret.Coord.Lon, &ret.Coord.Lat,
@@ -128,7 +127,6 @@ WHERE wd.city = '%s'; -- assuming you are filtering by WeatherData ID
 		&ret.Clouds.All,
 		&ret.Sys.Type, &ret.Sys.Country, &ret.Sys.Sunrise, &ret.Sys.Sunset,
 	)
-	fmt.Println(row)
 	if err != nil {
 		return ret, err
 	}

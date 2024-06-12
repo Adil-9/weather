@@ -20,7 +20,7 @@ func main() {
 	}
 }
 
-func createHandler() *application.Handler {
+func createHandler() *application.Handler {	//this makes it more complicated but architechture ¯\_(ツ)_/¯
 	db, err := database.ConnectPSQL()
 	if err != nil {
 		log.Fatal(err.Error())
