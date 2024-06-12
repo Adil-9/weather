@@ -65,14 +65,19 @@ CREATE TABLE IF NOT EXISTS Sys (
 CREATE TABLE IF NOT EXISTS WeatherData (
     id SERIAL PRIMARY KEY,
 	city VARCHAR(100),
-    coord_id INTEGER REFERENCES Coordinates(id) ON DELETE CASCADE,
+    coord_id INTEGER,
+	FOREIGN KEY (coord_id) REFERENCES Coordinates(id) ON DELETE CASCADE,
     base VARCHAR(50),
-    main_id INTEGER REFERENCES Main(id) ON DELETE CASCADE,
+    main_id INTEGER,
+	FOREIGN KEY (main_id) REFERENCES Main(id) ON DELETE CASCADE,
     visibility INTEGER,
-    wind_id INTEGER REFERENCES Wind(id) ON DELETE CASCADE,
-    clouds_id INTEGER REFERENCES Clouds(id) ON DELETE CASCADE,
+    wind_id INTEGER,
+	FOREIGN KEY (wind_id) REFERENCES Wind(id) ON DELETE CASCADE,
+    clouds_id INTEGER,
+	FOREIGN KEY (clouds_id) REFERENCES Clouds(id) ON DELETE CASCADE,
     dt INTEGER,
-    sys_id INTEGER REFERENCES Sys(id) ON DELETE CASCADE,
+    sys_id INTEGER,
+	FOREIGN KEY (sys_id) REFERENCES Sys(id) ON DELETE CASCADE,
     timezone INTEGER,
     name VARCHAR(100),
     cod INTEGER
@@ -120,7 +125,8 @@ func (m *Manager) GetWeather(city string) (structs.WeatherData, error) { //this 
 		JOIN Sys s ON wd.sys_id = s.id
 		WHERE wd.city = '%s'; -- assuming you are filtering by WeatherData ID`, city)
 	row := m.db.QueryRow(query)
-	err := row.Scan(&ret.Base, &ret.Visibility, &ret.Dt, &ret.Timezone, &ret.Name, &ret.Cod,
+	err := row.Scan(
+		&ret.Base, &ret.Visibility, &ret.Dt, &ret.Timezone, &ret.Name, &ret.Cod,
 		&ret.Coord.Lon, &ret.Coord.Lat,
 		&ret.Main.Temp, &ret.Main.FeelsLike, &ret.Main.TempMin, &ret.Main.TempMax, &ret.Main.Pressure, &ret.Main.Humidity, &ret.Main.SeaLevel, &ret.Main.GrndLevel,
 		&ret.Wind.Speed, &ret.Wind.Deg, &ret.Wind.Gust,

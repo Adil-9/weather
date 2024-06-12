@@ -7,7 +7,7 @@ import (
 	"weather/internal/structs"
 )
 
-const CityLocationAPI = "http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=1&appid=0c7c9c223884e6ee4768d39df765340c"
+const CityLocationAPI = "http://api.openweathermap.org/geo/1.0/direct?q=%s&limit=1&appid=0c7c9c223884e6ee4768d39df765340c" //left api keys on purpose
 const WeatherLatLonAPI = "https://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&appid=0c7c9c223884e6ee4768d39df765340c"
 
 func (r *Request) RequestWeather(city string) (structs.WeatherData, error) {
