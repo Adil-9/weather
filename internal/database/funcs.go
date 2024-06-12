@@ -8,7 +8,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const (
+const ( //.env or config file
 	host     = "localhost"
 	port     = 3000
 	user     = "postgres"
