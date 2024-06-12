@@ -3,7 +3,6 @@ package application
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"weather/internal/structs"
 )
@@ -52,7 +51,6 @@ func (h *Handler) HandlePut(w http.ResponseWriter, r *http.Request) {
 	}
 	err = h.service.PutWeatherInDatabase(city.Name)
 	if err != nil {
-		fmt.Print(err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
