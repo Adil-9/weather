@@ -9,11 +9,11 @@ import (
 )
 
 const (
-	host     = "localhost"
-	port     = 3000
+	host     = "postgres"
+	port     = 5432
 	user     = "postgres"
 	password = "password"
-	dbname   = "weather"
+	dbname   = "postgres"
 )
 
 func ConnectPSQL() (*sql.DB, error) {
