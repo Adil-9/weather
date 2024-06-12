@@ -20,13 +20,13 @@ func main() {
 	}
 }
 
-func createHandler() *application.Handler {	//this makes it more complicated but architechture ¯\_(ツ)_/¯
+func createHandler() *application.Handler {	//this makes it more complicated but architecture ¯\_(ツ)_/¯
 	db, err := database.ConnectPSQL()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 
-	err = database.CreateTables(db)
+	err = database.CreateTables(db)	//also migrations could be used, but to simplify
 	if err != nil {
 		log.Fatal(err.Error())
 	}
