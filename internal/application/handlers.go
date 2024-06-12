@@ -48,6 +48,9 @@ func (h *Handler) HandlePut(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
+	} else if city.Name == "" {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
 	}
 	err = h.service.PutWeatherInDatabase(city.Name)
 	if err != nil {
